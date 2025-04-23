@@ -1,0 +1,6 @@
+<launch>
+
+    <node name="deepface_node" pkg="deepface_ros" type="deepface_node" output="log" respawn="true">
+    </node>
+
+</launch>

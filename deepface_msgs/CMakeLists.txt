@@ -1,44 +1,42 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.0.2)
 project(deepface_msgs)
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
-
-find_package(ament_cmake REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
-
-
-set(msg_files
-  "msg/Emotion.msg"
-  "msg/Race.msg"
-  "msg/Gender.msg"
-  "msg/FaceDetection.msg"
-  "msg/FaceAnalysis.msg"
-  "msg/FacesAnalysis.msg"
+find_package(catkin REQUIRED COMPONENTS
+    roscpp
+    rospy
+    std_msgs
+    message_generation
+    sensor_msgs
 )
 
-set(srv_files
-  "srv/FaceVerification.srv"
-  "srv/FaceRecognition.srv"
-  "srv/FaceDetection.srv"
-  "srv/FacesAnalysis.srv"
-  "srv/ImageFacesAnalysis.srv"
+add_message_files(
+    FILES
+    Emotion.msg
+    Race.msg
+    Gender.msg
+    FaceDetection.msg
+    FaceAnalysis.msg
+    FacesAnalysis.msg
 )
 
-set(action_files
-  ""
+add_service_files(
+    FILES
+    FaceVerification.srv
+    FaceRecognition.srv
+    FacesAnalysisSrv.srv
+    ImageFacesAnalysis.srv
 )
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  ${msg_files}
-  ${srv_files}
-  ${action_files}
-  DEPENDENCIES builtin_interfaces std_msgs sensor_msgs
+generate_messages(
+    DEPENDENCIES
+        std_msgs
+        sensor_msgs
 )
 
-ament_export_dependencies(rosidl_default_runtime)
-ament_package()
+catkin_package(
+    CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs message_runtime
+)
+
+include_directories(
+    ${catkin_INCLUDE_DIRS}
+)
